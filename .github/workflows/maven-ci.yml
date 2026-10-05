@@ -22,15 +22,17 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # 3. Cache Maven dependencies to improve build speed
+      # 3. Cache Maven dependencies to improve build speed (Fixed syntax)
       - name: Cache Maven Dependencies
         uses: actions/cache@v4
         with:
           path: ~/.m2/repository
-          key: \({{ runner.os }}-maven-\){{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
 
       # 4. Compile, run tests, and verify the project
+      # Uncomment working-directory if your pom.xml is inside a subfolder (e.g., ./my-app)
       - name: Build and Test with Maven
+        # working-directory: ./your-subfolder-name
         run: mvn --batch-mode --update-snapshots clean verify
